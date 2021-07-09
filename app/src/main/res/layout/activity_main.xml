@@ -33,6 +33,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
+        android:onClick="onClickAdd"
         app:backgroundTint="@color/buttonColor"
         app:layout_constraintBottom_toBottomOf="@+id/noteListView"
         app:layout_constraintEnd_toEndOf="@+id/noteListView"

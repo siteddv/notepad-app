@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -48,15 +49,14 @@ public class MainActivity extends Activity {
         noteAdapter.updateAdapter(sqlManager.getNotesFromDb());
     }
 
-    public void onSaveButton(View view) {
-        String title = edTitle.getText().toString();
-        String description = edDescription.getText().toString();
-        sqlManager.insertToDb(title, description);
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         sqlManager.closeDb();
+    }
+
+    public void onClickAdd(View view) {
+        Intent intent = new Intent(MainActivity.this, EditActivity.class);
+        startActivity(intent);
     }
 }
