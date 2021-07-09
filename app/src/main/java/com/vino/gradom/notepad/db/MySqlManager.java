@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.vino.gradom.notepad.model.Note;
+
 import java.util.LinkedList;
 
 public class MySqlManager {
@@ -28,8 +30,8 @@ public class MySqlManager {
         db.insert(MyConstants.TABLE_NAME, null, cv);
     }
 
-    public LinkedList<String> getTitlesFromDb(){
-        LinkedList<String> resultList = new LinkedList<String>();
+    public LinkedList<Note> getNotesFromDb(){
+        LinkedList<Note> resultList = new LinkedList<Note>();
         Cursor cursor = db.query(
                 MyConstants.TABLE_NAME,
                 null, null,
@@ -38,7 +40,13 @@ public class MySqlManager {
 
         while (cursor.moveToNext()){
             String title = cursor.getString(cursor.getColumnIndex(MyConstants.TITLE));
-            resultList.add(title);
+            String description = cursor.getString(cursor.getColumnIndex(MyConstants.DESCRIPTION));
+
+            Note note = new Note();
+            note.setTitle(title);
+            note.setDescription(description);
+
+            resultList.add(note);
         }
 
         cursor.close();
