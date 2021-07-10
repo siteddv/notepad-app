@@ -14,7 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.vino.gradom.notepad.db.MyConstants;
 import com.vino.gradom.notepad.db.MySqlManager;
+import com.vino.gradom.notepad.model.Note;
 
 public class EditActivity extends AppCompatActivity {
 
@@ -40,6 +42,25 @@ public class EditActivity extends AppCompatActivity {
         edDescription = findViewById(R.id.etDescription);
         imageLayout = findViewById(R.id.imageLayout);
         articleImage = findViewById(R.id.articleImage);
+        getInfoFromIntent();
+    }
+
+    private void getInfoFromIntent(){
+        Intent intent = getIntent();
+        if(intent!=null){
+            Note note = (Note) intent.getSerializableExtra(MyConstants.NOTE_INTENT);
+
+            String title = note.getTitle();
+            edTitle.setText(title);
+
+            String description = note.getDescription();
+            edDescription.setText(description);
+
+//            String imageURI = note.getImageURI();
+//            if(!imageURI.equals("empty")){
+//                articleImage.setImageURI(Uri.parse(imageURI));
+//            }
+        }
     }
 
     @Override
