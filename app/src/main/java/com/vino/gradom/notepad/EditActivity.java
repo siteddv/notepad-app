@@ -1,21 +1,26 @@
 package com.vino.gradom.notepad;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vino.gradom.notepad.db.MySqlManager;
 
-public class EditActivity extends Activity {
+public class EditActivity extends AppCompatActivity {
 
+    private ConstraintLayout imageLayout;
+    private ImageView articleImage;
+    private FloatingActionButton editImage, deleteImage;
     private MySqlManager sqlManager;
-    private EditText edTitle;
-    private EditText edDescription;
+    private EditText edTitle, edDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,7 @@ public class EditActivity extends Activity {
         sqlManager = new MySqlManager(this);
         edTitle = findViewById(R.id.etTitle);
         edDescription = findViewById(R.id.etDescription);
+        imageLayout = findViewById(R.id.imageLayout);
     }
 
     @Override
@@ -52,5 +58,28 @@ public class EditActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         sqlManager.closeDb();
+    }
+
+    public void onClickChangeImage(View view) {
+    }
+
+    public void onClickCloseImage(View view) {
+        handleImageLayout();
+    }
+
+    public void onClickDeleteImage(View view) {
+
+    }
+
+    public void onClickSetImage(View view) {
+        handleImageLayout();
+    }
+
+    private void handleImageLayout(){
+        if(imageLayout.getVisibility() == View.VISIBLE){
+            imageLayout.setVisibility(View.GONE);
+        }else{
+            imageLayout.setVisibility(View.VISIBLE);
+        }
     }
 }
