@@ -42,10 +42,12 @@ public class MySqlManager {
         while (cursor.moveToNext()){
             String title = cursor.getString(cursor.getColumnIndex(MyConstants.TITLE));
             String description = cursor.getString(cursor.getColumnIndex(MyConstants.DESCRIPTION));
+            String imageURI = cursor.getString(cursor.getColumnIndex(MyConstants.IMAGE_URI));
 
             Note note = new Note();
             note.setTitle(title);
             note.setDescription(description);
+            note.setImageURI(imageURI);
 
             resultList.add(note);
         }
