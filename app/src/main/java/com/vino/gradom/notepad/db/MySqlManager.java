@@ -23,10 +23,11 @@ public class MySqlManager {
         db = mySqlHelper.getReadableDatabase();
     }
 
-    public void insertToDb(String title, String description){
+    public void insertToDb(String title, String description, String imageURI){
         ContentValues cv = new ContentValues();
         cv.put(MyConstants.TITLE, title);
         cv.put(MyConstants.DESCRIPTION, description);
+        cv.put(MyConstants.IMAGE_URI, imageURI);
         db.insert(MyConstants.TABLE_NAME, null, cv);
     }
 
