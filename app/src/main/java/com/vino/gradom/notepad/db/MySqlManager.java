@@ -31,12 +31,13 @@ public class MySqlManager {
         db.insert(MyConstants.TABLE_NAME, null, cv);
     }
 
-    public LinkedList<Note> getNotesFromDb(){
+    public LinkedList<Note> getNotesFromDb(String searchText){
         LinkedList<Note> resultList = new LinkedList<Note>();
+        String selection = MyConstants.TITLE + " LIKE ?";
         Cursor cursor = db.query(
                 MyConstants.TABLE_NAME,
-                null, null,
-                null, null,
+                null, selection,
+                new String[]{"%"+searchText+"%"}, null,
                 null, null);
 
         while (cursor.moveToNext()){

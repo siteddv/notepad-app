@@ -10,9 +10,11 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,9 +24,6 @@ import com.vino.gradom.notepad.db.MySqlManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ConstraintLayout imageLayout;
-    private ImageView articleImage;
-    private FloatingActionButton editImage, deleteImage;
     private MySqlManager sqlManager;
     private EditText edTitle, edDescription;
     private RecyclerView noteListView;
@@ -40,6 +39,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        MenuItem item = menu.findItem(R.id.id_search);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                noteAdapter.updateAdapter(sqlManager.getNotesFromDb(newText));
+                return false;
+            }
+        });
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -58,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         sqlManager.openDb();
-        noteAdapter.updateAdapter(sqlManager.getNotesFromDb());
+        noteAdapter.updateAdapter(sqlManager.getNotesFromDb(""));
     }
 
     @Override
