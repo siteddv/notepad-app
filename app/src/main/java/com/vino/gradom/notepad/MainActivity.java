@@ -1,25 +1,18 @@
 package com.vino.gradom.notepad;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.SearchView;
-import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.vino.gradom.notepad.adapter.NoteAdapter;
 import com.vino.gradom.notepad.db.MyConstants;
 import com.vino.gradom.notepad.db.MySqlManager;
@@ -27,8 +20,6 @@ import com.vino.gradom.notepad.db.MySqlManager;
 public class MainActivity extends AppCompatActivity {
 
     private MySqlManager sqlManager;
-    private EditText edTitle, edDescription;
-    private RecyclerView noteListView;
     private NoteAdapter noteAdapter;
 
     @Override
@@ -60,9 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void init(){
         sqlManager = new MySqlManager(this);
-        edTitle = findViewById(R.id.etTitle);
-        edDescription = findViewById(R.id.etDescription);
-        noteListView = findViewById(R.id.noteListView);
+        RecyclerView noteListView = findViewById(R.id.noteListView);
         noteAdapter = new NoteAdapter(this);
         noteListView.setLayoutManager(new LinearLayoutManager(this));
         getItemTouchHelper().attachToRecyclerView(noteListView);

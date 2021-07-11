@@ -1,33 +1,22 @@
 package com.vino.gradom.notepad;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vino.gradom.notepad.db.MyConstants;
 import com.vino.gradom.notepad.db.MySqlManager;
 import com.vino.gradom.notepad.model.Note;
-
-import java.io.File;
-import java.net.URI;
 
 public class EditActivity extends AppCompatActivity {
 
@@ -115,6 +104,7 @@ public class EditActivity extends AppCompatActivity {
         sqlManager.closeDb();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressWarnings("deprecation")
     public void onClickChangeImage(View view) {
         Intent chooser = new Intent(Intent.ACTION_OPEN_DOCUMENT);

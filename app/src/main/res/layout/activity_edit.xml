@@ -19,13 +19,14 @@
         android:layout_marginRight="8dp"
         android:background="@android:drawable/editbox_background_normal"
         android:ems="10"
-        android:hint="Title"
+        android:hint="@string/edit_page_title_placeholder"
         android:inputType="textPersonName"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/imageLayout"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/etDescription"
@@ -36,13 +37,14 @@
         android:background="@android:drawable/editbox_background_normal"
         android:ems="10"
         android:gravity="top"
-        android:hint="Description"
+        android:hint="@string/edit_page_description_placeholder"
         android:inputType="textMultiLine|textPersonName"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/etTitle"
         app:layout_constraintStart_toStartOf="@+id/etTitle"
-        app:layout_constraintTop_toBottomOf="@+id/etTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/etTitle"
+        android:autofillHints="" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/saveButton"
@@ -59,7 +61,10 @@
         app:layout_constraintEnd_toEndOf="@+id/etDescription"
         app:rippleColor="@color/white"
         app:srcCompat="@drawable/ic_save"
-        app:tint="@null" />
+        app:tint="@null"
+        android:contentDescription="@string/save_button_description"
+        android:focusable="true"
+        tools:ignore="UsingOnClickInXml" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/setImageButton"
@@ -72,7 +77,10 @@
         app:layout_constraintBottom_toTopOf="@+id/saveButton"
         app:layout_constraintEnd_toEndOf="@+id/saveButton"
         app:srcCompat="@drawable/ic_image"
-        app:tint="@color/white" />
+        app:tint="@color/white"
+        android:contentDescription="@string/set_image_description"
+        android:focusable="true"
+        tools:ignore="UsingOnClickInXml" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -104,7 +112,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_image" />
+            app:srcCompat="@drawable/ic_image"
+            android:contentDescription="@string/article_image_description" />
 
         <ImageButton
             android:id="@+id/editImageButton"
@@ -115,7 +124,9 @@
             app:layout_constraintStart_toStartOf="@+id/articleImage"
             app:layout_constraintTop_toTopOf="@+id/articleImage"
             app:srcCompat="@drawable/ic_edit"
-            app:tint="@color/buttonColor" />
+            app:tint="@color/buttonColor"
+            android:contentDescription="@string/edit_button_description"
+            tools:ignore="UsingOnClickInXml" />
 
         <ImageButton
             android:id="@+id/deleteImageButton"
@@ -128,7 +139,9 @@
             app:layout_constraintStart_toEndOf="@+id/editImageButton"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_delete"
-            app:tint="@color/buttonColor" />
+            app:tint="@color/buttonColor"
+            android:contentDescription="@string/delete_button_description"
+            tools:ignore="UsingOnClickInXml" />
 
         <ImageButton
             android:id="@+id/closeImageButton"
@@ -139,7 +152,9 @@
             app:layout_constraintEnd_toEndOf="@+id/articleImage"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_close"
-            app:tint="@color/buttonColor" />
+            app:tint="@color/buttonColor"
+            android:contentDescription="@string/close_button_description"
+            tools:ignore="UsingOnClickInXml" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

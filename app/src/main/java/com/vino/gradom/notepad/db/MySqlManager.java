@@ -10,12 +10,10 @@ import com.vino.gradom.notepad.model.Note;
 import java.util.LinkedList;
 
 public class MySqlManager {
-    private MySqlHelper mySqlHelper;
-    private Context context;
+    private final MySqlHelper mySqlHelper;
     private SQLiteDatabase db;
 
     public MySqlManager(Context context) {
-        this.context = context;
         mySqlHelper = new MySqlHelper(context);
     }
 
@@ -32,7 +30,7 @@ public class MySqlManager {
     }
 
     public LinkedList<Note> getNotesFromDb(String searchText){
-        LinkedList<Note> resultList = new LinkedList<Note>();
+        LinkedList<Note> resultList = new LinkedList<>();
         String selection = MyConstants.TITLE + " LIKE ?";
         Cursor cursor = db.query(
                 MyConstants.TABLE_NAME,

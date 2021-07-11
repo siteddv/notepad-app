@@ -23,8 +23,8 @@ public class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     private TextView tvDescription;
     private ImageView ivImage;
 
-    private Context context;
-    private ArrayList<Note> noteList;
+    private final Context context;
+    private final ArrayList<Note> noteList;
 
     public NoteViewHolder(@NonNull View itemView, Context context, ArrayList<Note> noteList) {
         super(itemView);

@@ -39,5 +39,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/noteListView"
         app:layout_constraintEnd_toEndOf="@+id/noteListView"
         app:rippleColor="@color/white"
-        app:srcCompat="@drawable/add_new_ic" />
+        app:srcCompat="@drawable/add_new_ic"
+        android:contentDescription="@string/add_note_button_description"
+        android:focusable="true"
+        tools:ignore="UsingOnClickInXml" />
 </androidx.constraintlayout.widget.ConstraintLayout>
