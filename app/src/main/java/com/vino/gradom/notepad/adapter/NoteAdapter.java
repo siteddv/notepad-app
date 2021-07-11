@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.vino.gradom.notepad.EditActivity;
 import com.vino.gradom.notepad.R;
 import com.vino.gradom.notepad.db.MyConstants;
+import com.vino.gradom.notepad.db.MySqlManager;
 import com.vino.gradom.notepad.model.Note;
 import com.vino.gradom.notepad.viewholder.NoteViewHolder;
 
@@ -53,5 +54,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteViewHolder> {
         noteList.clear();
         noteList.addAll(newNoteList);
         notifyDataSetChanged();
+    }
+
+    public void removeItem(int position, MySqlManager sqlManager){
+        sqlManager.deleteNoteById(noteList.get(position).getId());
+        noteList.remove(position);
+        notifyItemRangeChanged(0,noteList.size());
+        notifyItemRemoved(position);
     }
 }

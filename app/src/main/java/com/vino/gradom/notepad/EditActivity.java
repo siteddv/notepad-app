@@ -6,7 +6,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,10 +24,13 @@ import com.vino.gradom.notepad.db.MyConstants;
 import com.vino.gradom.notepad.db.MySqlManager;
 import com.vino.gradom.notepad.model.Note;
 
+import java.io.File;
+import java.net.URI;
+
 public class EditActivity extends AppCompatActivity {
 
     private final int PICK_IMAGE_CODE = 200;
-    private String imageURI = "empty";
+    private String imagePath = "empty";
 
     private ConstraintLayout imageLayout;
     private ImageView articleImage;
@@ -47,20 +56,27 @@ public class EditActivity extends AppCompatActivity {
 
     private void getInfoFromIntent(){
         Intent intent = getIntent();
-        if(intent!=null){
-            Note note = (Note) intent.getSerializableExtra(MyConstants.NOTE_INTENT);
-
-            String title = note.getTitle();
-            edTitle.setText(title);
-
-            String description = note.getDescription();
-            edDescription.setText(description);
-
-//            String imageURI = note.getImageURI();
-//            if(!imageURI.equals("empty")){
-//                articleImage.setImageURI(Uri.parse(imageURI));
-//            }
+        if(intent==null) {
+            return;
         }
+
+        Note note = (Note) intent.getSerializableExtra(MyConstants.NOTE_INTENT);
+
+        if(note == null){
+            return;
+        }
+
+        String title = note.getTitle();
+        edTitle.setText(title);
+
+        String description = note.getDescription();
+        edDescription.setText(description);
+
+        imagePath = note.getImageURI();
+        if(!imagePath.equals("empty")){
+            articleImage.setImageURI(Uri.parse(imagePath));
+        }
+
     }
 
     @Override
@@ -76,7 +92,7 @@ public class EditActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.incorrect_title_or_description, Toast.LENGTH_LONG).show();
             return;
         }
-        sqlManager.insertToDb(title, description, imageURI);
+        sqlManager.insertToDb(title, description, imagePath);
         Toast.makeText(this, R.string.successful_adding, Toast.LENGTH_LONG).show();
         finish();
     }
@@ -98,9 +114,8 @@ public class EditActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE_CODE && data != null){
-            articleImage.setImageResource(android.R.color.transparent);
+            imagePath = data.getData().getPath();
             articleImage.setImageURI(data.getData());
-            imageURI = data.getData().toString();
             return;
         }
         Toast.makeText(this, "Selected image is invalid",Toast.LENGTH_LONG).show();
@@ -112,7 +127,7 @@ public class EditActivity extends AppCompatActivity {
     }
 
     public void onClickDeleteImage(View view) {
-        imageURI = "empty";
+        imagePath = "empty";
         articleImage.setImageResource(R.drawable.ic_image);
     }
 

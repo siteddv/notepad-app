@@ -7,6 +7,7 @@ public class Note implements Serializable {
     private String title;
     private String description;
     private String imageURI;
+    private int id = 0;
 
     public String getTitle(){
         return title;
@@ -30,5 +31,13 @@ public class Note implements Serializable {
 
     public void setImageURI(String imageURI) {
         this.imageURI = imageURI;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 }

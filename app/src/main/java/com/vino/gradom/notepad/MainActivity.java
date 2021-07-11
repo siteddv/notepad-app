@@ -1,7 +1,9 @@
 package com.vino.gradom.notepad;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         noteListView = findViewById(R.id.noteListView);
         noteAdapter = new NoteAdapter(this);
         noteListView.setLayoutManager(new LinearLayoutManager(this));
+        getItemTouchHelper().attachToRecyclerView(noteListView);
         noteListView.setAdapter(noteAdapter);
 
     }
@@ -83,5 +86,20 @@ public class MainActivity extends AppCompatActivity {
     public void onClickAdd(View view) {
         Intent intent = new Intent(MainActivity.this, EditActivity.class);
         startActivity(intent);
+    }
+
+    private ItemTouchHelper getItemTouchHelper(){
+        return new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int notePosition = viewHolder.getAdapterPosition();
+                noteAdapter.removeItem(notePosition, sqlManager);
+            }
+        });
     }
 }

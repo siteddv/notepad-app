@@ -44,17 +44,24 @@ public class MySqlManager {
             String title = cursor.getString(cursor.getColumnIndex(MyConstants.TITLE));
             String description = cursor.getString(cursor.getColumnIndex(MyConstants.DESCRIPTION));
             String imageURI = cursor.getString(cursor.getColumnIndex(MyConstants.IMAGE_URI));
+            int id = cursor.getInt(cursor.getColumnIndex(MyConstants._ID));
 
             Note note = new Note();
             note.setTitle(title);
             note.setDescription(description);
             note.setImageURI(imageURI);
+            note.setId(id);
 
             resultList.add(note);
         }
 
         cursor.close();
         return resultList;
+    }
+
+    public void deleteNoteById(int id){
+        String selection = MyConstants._ID + "=" + id;
+        db.delete(MyConstants.TABLE_NAME, selection, null);
     }
 
     public void closeDb(){
