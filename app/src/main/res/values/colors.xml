@@ -10,4 +10,5 @@
     <color name="blue_light">#58A9AF</color>
     <color name="buttonColor">#448286</color>
     <color name="app_bar_color">#336063</color>
+    <color name="tint_color">#999</color>
 </resources>
