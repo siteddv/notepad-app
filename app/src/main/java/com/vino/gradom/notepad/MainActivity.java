@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickAdd(View view) {
         Intent intent = new Intent(MainActivity.this, EditActivity.class);
+        intent.putExtra(MyConstants.IS_NEW_NOTE_INTENT, true);
         startActivity(intent);
     }
 

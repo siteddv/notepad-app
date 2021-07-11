@@ -64,6 +64,15 @@ public class MySqlManager {
         db.delete(MyConstants.TABLE_NAME, selection, null);
     }
 
+    public void updateNoteById(int id, String title, String description, String imageURI){
+        String selection = MyConstants._ID + "=" + id;
+        ContentValues cv = new ContentValues();
+        cv.put(MyConstants.TITLE, title);
+        cv.put(MyConstants.DESCRIPTION, description);
+        cv.put(MyConstants.IMAGE_URI, imageURI);
+        db.update(MyConstants.TABLE_NAME,cv, selection, null);
+    }
+
     public void closeDb(){
         mySqlHelper.close();
     }

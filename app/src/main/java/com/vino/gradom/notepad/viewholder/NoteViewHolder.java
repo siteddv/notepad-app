@@ -2,7 +2,9 @@ package com.vino.gradom.notepad.viewholder;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,8 @@ public class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     private TextView tvTitle;
     private TextView tvDescription;
+    private ImageView ivImage;
+
     private Context context;
     private ArrayList<Note> noteList;
 
@@ -32,12 +36,19 @@ public class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     private void init(){
         tvTitle = itemView.findViewById(R.id.tvTitle_main);
         tvDescription = itemView.findViewById(R.id.tvDescription_main);
+        ivImage = itemView.findViewById(R.id.articlePreviewImage);
         itemView.setOnClickListener(this);
     }
 
     public void setData(Note note){
         tvTitle.setText(note.getTitle());
         tvDescription.setText(note.getDescription());
+        String imageUri = note.getImageURI();
+        if(!imageUri.equals("empty")) {
+            ivImage.setImageURI(Uri.parse(imageUri));
+            return;
+        }
+        ivImage.setImageResource(R.drawable.ic_article);
     }
 
     @Override
@@ -45,6 +56,7 @@ public class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         int id = getAdapterPosition();
         Intent intent = new Intent(context, EditActivity.class);
         intent.putExtra(MyConstants.NOTE_INTENT, noteList.get(id));
+        intent.putExtra(MyConstants.IS_NEW_NOTE_INTENT, false);
         context.startActivity(intent);
     }
 }

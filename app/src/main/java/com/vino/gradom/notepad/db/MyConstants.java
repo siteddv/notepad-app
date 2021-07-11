@@ -17,5 +17,7 @@ public class MyConstants {
             + IMAGE_URI + " TEXT)";
     public static final String DROP_TABLE_INSTRUCTION =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
+
     public static final String NOTE_INTENT = "note_intent";
+    public static final String IS_NEW_NOTE_INTENT = "mode_intent";
 }

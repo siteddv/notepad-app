@@ -32,13 +32,16 @@ import java.net.URI;
 public class EditActivity extends AppCompatActivity {
 
     private final int PICK_IMAGE_CODE = 200;
+
     private String imagePath = "empty";
+    private boolean isNewNote;
+    private int noteId;
 
     private ConstraintLayout imageLayout;
     private ImageView articleImage;
-    private FloatingActionButton editImage, deleteImage;
     private MySqlManager sqlManager;
     private EditText edTitle, edDescription;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,27 +61,28 @@ public class EditActivity extends AppCompatActivity {
 
     private void getInfoFromIntent(){
         Intent intent = getIntent();
-        if(intent==null) {
-            return;
+        isNewNote = intent.getBooleanExtra(MyConstants.IS_NEW_NOTE_INTENT, true);
+
+        if(!isNewNote){
+            Note note = (Note) intent.getSerializableExtra(MyConstants.NOTE_INTENT);
+
+            if(note == null){
+                return;
+            }
+
+            noteId = note.getId();
+
+            String title = note.getTitle();
+            edTitle.setText(title);
+
+            String description = note.getDescription();
+            edDescription.setText(description);
+
+            imagePath = note.getImageURI();
+            if(!imagePath.equals("empty")){
+                articleImage.setImageURI(Uri.parse(imagePath));
+            }
         }
-
-        Note note = (Note) intent.getSerializableExtra(MyConstants.NOTE_INTENT);
-
-        if(note == null){
-            return;
-        }
-
-        String title = note.getTitle();
-        edTitle.setText(title);
-
-        String description = note.getDescription();
-        edDescription.setText(description);
-
-        imagePath = note.getImageURI();
-        if(!imagePath.equals("empty")){
-            articleImage.setImageURI(Uri.parse(imagePath));
-        }
-
     }
 
     @Override
@@ -94,7 +98,13 @@ public class EditActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.incorrect_title_or_description, Toast.LENGTH_LONG).show();
             return;
         }
-        sqlManager.insertToDb(title, description, imagePath);
+
+        if(isNewNote){
+            sqlManager.insertToDb(title, description, imagePath);
+        }else {
+            sqlManager.updateNoteById(noteId, title, description, imagePath);
+        }
+
         Toast.makeText(this, R.string.successful_adding, Toast.LENGTH_LONG).show();
         finish();
     }
