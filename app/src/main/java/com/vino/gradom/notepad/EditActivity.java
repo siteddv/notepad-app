@@ -16,9 +16,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.vino.gradom.notepad.db.MyConstants;
 import com.vino.gradom.notepad.db.MySqlManager;
+import com.vino.gradom.notepad.db.OnNoteSaved;
 import com.vino.gradom.notepad.model.Note;
+import com.vino.gradom.notepad.threading.AppExecutor;
 
-public class EditActivity extends AppCompatActivity {
+public class EditActivity extends AppCompatActivity implements OnNoteSaved {
 
     private final int PICK_IMAGE_CODE = 200;
 
@@ -81,21 +83,21 @@ public class EditActivity extends AppCompatActivity {
     }
 
     public void onSaveButton(View view) {
-        String title = edTitle.getText().toString();
-        String description = edDescription.getText().toString();
+        final String title = edTitle.getText().toString();
+        final String description = edDescription.getText().toString();
         if(title.equals("") || description.equals("")){
-            Toast.makeText(this, R.string.incorrect_title_or_description, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.incorrect_title_or_description, Toast.LENGTH_LONG)
+                    .show();
             return;
         }
 
         if(isNewNote){
-            sqlManager.insertToDb(title, description, imagePath);
+            AppExecutor.getInstance().getSubThread().execute(() -> sqlManager.
+                    insertToDb(title, description, imagePath, EditActivity.this));
         }else {
-            sqlManager.updateNoteById(noteId, title, description, imagePath);
+            AppExecutor.getInstance().getSubThread().execute(() -> sqlManager
+                    .updateNoteById(noteId, title, description, imagePath, EditActivity.this));
         }
-
-        Toast.makeText(this, R.string.successful_adding, Toast.LENGTH_LONG).show();
-        finish();
     }
 
     @Override
@@ -120,7 +122,8 @@ public class EditActivity extends AppCompatActivity {
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE_CODE && data != null){
             imagePath = data.getData().toString();
             articleImage.setImageURI(data.getData());
-            getContentResolver().takePersistableUriPermission(data.getData(), Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            getContentResolver().takePersistableUriPermission(data.getData(),
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION);
             return;
         }
 
@@ -147,5 +150,13 @@ public class EditActivity extends AppCompatActivity {
         }else{
             imageLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onSaved(int msgResId) {
+        AppExecutor.getInstance().getMainThread().execute(() -> {
+            Toast.makeText(EditActivity.this, msgResId, Toast.LENGTH_LONG).show();
+            finish();
+        });
     }
 }

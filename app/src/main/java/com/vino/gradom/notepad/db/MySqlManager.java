@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.vino.gradom.notepad.R;
 import com.vino.gradom.notepad.model.Note;
 
 import java.util.LinkedList;
@@ -21,15 +22,17 @@ public class MySqlManager {
         db = mySqlHelper.getReadableDatabase();
     }
 
-    public void insertToDb(String title, String description, String imageURI){
+    public void insertToDb(String title, String description, String imageURI, OnNoteSaved onNoteSaved){
         ContentValues cv = new ContentValues();
         cv.put(MyConstants.TITLE, title);
         cv.put(MyConstants.DESCRIPTION, description);
         cv.put(MyConstants.IMAGE_URI, imageURI);
         db.insert(MyConstants.TABLE_NAME, null, cv);
+        int successfulAddingMsgId = R.string.successful_adding;
+        onNoteSaved.onSaved(successfulAddingMsgId);
     }
 
-    public LinkedList<Note> getNotesFromDb(String searchText){
+    public void getNotesFromDbByTextFragment(String searchText, OnDataReceived onDataReceived){
         LinkedList<Note> resultList = new LinkedList<>();
         String selection = MyConstants.TITLE + " LIKE ?";
         Cursor cursor = db.query(
@@ -54,7 +57,7 @@ public class MySqlManager {
         }
 
         cursor.close();
-        return resultList;
+        onDataReceived.onReceived(resultList);
     }
 
     public void deleteNoteById(int id){
@@ -62,13 +65,15 @@ public class MySqlManager {
         db.delete(MyConstants.TABLE_NAME, selection, null);
     }
 
-    public void updateNoteById(int id, String title, String description, String imageURI){
+    public void updateNoteById(int id, String title, String description, String imageURI, OnNoteSaved onNoteSaved){
         String selection = MyConstants._ID + "=" + id;
         ContentValues cv = new ContentValues();
         cv.put(MyConstants.TITLE, title);
         cv.put(MyConstants.DESCRIPTION, description);
         cv.put(MyConstants.IMAGE_URI, imageURI);
         db.update(MyConstants.TABLE_NAME,cv, selection, null);
+        int successfulUpdatingMsgId = R.string.successful_updating;
+        onNoteSaved.onSaved(successfulUpdatingMsgId);
     }
 
     public void closeDb(){

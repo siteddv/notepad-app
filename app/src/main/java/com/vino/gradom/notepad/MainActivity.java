@@ -16,8 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.vino.gradom.notepad.adapter.NoteAdapter;
 import com.vino.gradom.notepad.db.MyConstants;
 import com.vino.gradom.notepad.db.MySqlManager;
+import com.vino.gradom.notepad.db.OnDataReceived;
+import com.vino.gradom.notepad.model.Note;
+import com.vino.gradom.notepad.threading.AppExecutor;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.LinkedList;
+
+public class MainActivity extends AppCompatActivity implements OnDataReceived {
 
     private MySqlManager sqlManager;
     private NoteAdapter noteAdapter;
@@ -42,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                noteAdapter.updateAdapter(sqlManager.getNotesFromDb(newText));
+                readNotesFromDb(newText);
                 return false;
             }
         });
@@ -63,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         sqlManager.openDb();
-        noteAdapter.updateAdapter(sqlManager.getNotesFromDb(""));
+        readNotesFromDb("");
     }
 
     @Override
@@ -79,9 +84,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ItemTouchHelper getItemTouchHelper(){
-        return new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        return new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
 
@@ -91,5 +99,15 @@ public class MainActivity extends AppCompatActivity {
                 noteAdapter.removeItem(notePosition, sqlManager);
             }
         });
+    }
+
+    @Override
+    public void onReceived(LinkedList<Note> noteList) {
+        AppExecutor.getInstance().getMainThread().execute(() -> noteAdapter.updateAdapter(noteList));
+    }
+
+    private void readNotesFromDb(final String newText){
+        AppExecutor.getInstance().getSubThread().execute(() ->
+                sqlManager.getNotesFromDbByTextFragment(newText, MainActivity.this));
     }
 }
