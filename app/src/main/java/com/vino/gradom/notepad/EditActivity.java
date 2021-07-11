@@ -1,6 +1,7 @@
 package com.vino.gradom.notepad;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -11,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -105,19 +107,23 @@ public class EditActivity extends AppCompatActivity {
 
     @SuppressWarnings("deprecation")
     public void onClickChangeImage(View view) {
-        Intent chooser = new Intent(Intent.ACTION_PICK);
+        Intent chooser = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         chooser.setType("image/*");
         startActivityForResult(chooser, PICK_IMAGE_CODE);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE_CODE && data != null){
-            imagePath = data.getData().getPath();
+            imagePath = data.getData().toString();
             articleImage.setImageURI(data.getData());
+            getContentResolver().takePersistableUriPermission(data.getData(), Intent.FLAG_GRANT_READ_URI_PERMISSION);
             return;
         }
+
         Toast.makeText(this, "Selected image is invalid",Toast.LENGTH_LONG).show();
 
     }
