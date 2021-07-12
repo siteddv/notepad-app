@@ -9,6 +9,7 @@ import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements OnDataReceived {
     }
 
     private void init(){
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         sqlManager = new MySqlManager(this);
         RecyclerView noteListView = findViewById(R.id.noteListView);
         noteAdapter = new NoteAdapter(this);
